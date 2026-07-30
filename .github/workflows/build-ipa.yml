@@ -20,8 +20,6 @@ jobs:
     timeout-minutes: 90
 
     env:
-      DERIVED_DATA: ${{ runner.temp }}/VelumDerivedData
-      PACKAGE_DIR: ${{ runner.temp }}/VelumPackage
       HOMEBREW_NO_AUTO_UPDATE: "1"
 
     steps:
@@ -47,6 +45,7 @@ jobs:
       - name: Build unsigned app
         run: |
           set -o pipefail
+          DERIVED_DATA="$RUNNER_TEMP/VelumDerivedData"
           xcodebuild \
             -project Velum.xcodeproj \
             -scheme Velum \
@@ -62,6 +61,8 @@ jobs:
 
       - name: Package IPA
         run: |
+          DERIVED_DATA="$RUNNER_TEMP/VelumDerivedData"
+          PACKAGE_DIR="$RUNNER_TEMP/VelumPackage"
           APP_PATH="$DERIVED_DATA/Build/Products/Release-iphoneos/Velum.app"
           test -d "$APP_PATH"
 
