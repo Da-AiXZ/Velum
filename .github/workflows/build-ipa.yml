@@ -39,13 +39,13 @@ jobs:
           if ! command -v ninja >/dev/null 2>&1; then
             brew install ninja
           fi
-          if ! command -v ld.lld >/dev/null 2>&1; then
-            brew install llvm
+          if ! brew list --versions lld >/dev/null 2>&1; then
+            brew install lld
           fi
-          echo "$(brew --prefix llvm)/bin" >> "$GITHUB_PATH"
+          echo "$(brew --prefix lld)/bin" >> "$GITHUB_PATH"
           meson --version
           ninja --version
-          "$(brew --prefix llvm)/bin/ld.lld" --version
+          "$(brew --prefix lld)/bin/ld.lld" --version
 
       - name: Build unsigned app
         run: |
